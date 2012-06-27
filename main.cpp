@@ -19,10 +19,11 @@ void StateMachine();
 void StrMatchTest();
 void PackageTest();
 void LlrbTest();
+int bwt_transform_test();
 
 int main(int argc, char *argv[])
 {
-    SortTest();
+    //SortTest();
 
     //printf("\n/**************************hanoi recursive***************************/\n");
     //hanoi(3, -1);
@@ -69,4 +70,5 @@ int main(int argc, char *argv[])
 
     //printf("\n/**************************utils test*****************************/\n");
     //UtilsTest();
+    bwt_transform_test();
 }
