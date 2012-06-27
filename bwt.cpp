@@ -1,18 +1,10 @@
-#include <string>
 #include <vector>
 #include <map>
 #include <algorithm>
 #include <iostream>
 #include <assert.h>
 #include <string.h>
-
-using namespace std;
-
-struct BwtEncoded
-{
-    string str;
-    int index;
-};
+#include "bwt.h"
 
 BwtEncoded bwt_encode(const string &str)
 {

@@ -21,7 +21,7 @@ LIB_OBJS = \
 	SbTree.o \
 	state_machine.o \
 	str_data.o \
-	wbt.o \
+	bwt.o \
 	interval_tree.o \
 	llrb.o \
 	package.o \
@@ -30,6 +30,7 @@ LIB_OBJS = \
 	str_alg.o \
 	utils.o \
 	time_statistics.o \
+	rsync.o \
 
 
 CXXFLAGS=$(CFLAGS)
