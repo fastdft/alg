@@ -175,7 +175,7 @@ void suffix_array(const string &str, int sa[], int height[])
     //add assert to let the result right
     for(int i=0; i<str_len; i++)
     {
-        assert(rank[sa[i]] == i);
+        //assert(rank[sa[i]] == i);
     }
 
     //compute height
@@ -198,6 +198,97 @@ void suffix_array(const string &str, int sa[], int height[])
     for(int i=0; i<str_len; i++)
     {
         height[i] = h[sa[i]];
+    }
+}
+
+const char *str_ptr;
+int suffix_array2_compare(const void *a, const void *b)
+{
+    int a1 = *(int *)a;
+    int b1 = *(int *)b;
+
+    return (*(str_ptr + a1) - *(str_ptr + b1)); 
+}
+
+void suffix_array2(string &str, int sa[], int height[])
+{
+    int rank[1000], next[1000];
+    int str_size = str.size();
+    int i, j, h, k;
+
+    for (i=0; i<str_size; i++)
+        sa[i] = i;
+
+    str_ptr = str.c_str();
+    qsort(sa, str_size, sizeof(int), suffix_array2_compare);
+
+    rank[sa[0]] = 0;
+    for (i=1; i<str_size; i++)
+    {
+        if (str.at(sa[i]) == str.at(sa[i-1]))
+            rank[sa[i]] = rank[sa[i-1]];
+        else
+            rank[sa[i]] = i;
+    }
+
+    for (h=1; h<str_size; h <<= 1)
+    {
+        for (i=0; i<str_size; i++)
+        {
+            height[i] = next[i] = -1;
+        }
+
+        //must start from the end;
+        //but the last one may be wrongly depend on the first chars, for example, when h=1, the position of last suffix depend on the first char's rank
+        for (i=str_size-1; i>=0; i--)
+        {
+            j = sa[i] - h;
+            if (j < 0)
+                j += str_size;
+
+            next[j] = height[rank[j]];
+            height[rank[j]] = j;
+        }
+
+        for (i=k=0; i<str_size-1; i++)
+        {
+            if (height[i] >= 0)
+            {
+                for (j=height[i]; j>=0; j=next[j])
+                    sa[k++] = j;
+            }
+        }
+
+        //update rank
+        for (i=0; i<str_size; i++)
+        {
+            if (i>0 && sa[i] + h < str_size && sa[i-1] + h < str_size
+                    && rank[sa[i]] == rank[sa[i-1]] 
+                    && rank[sa[i] + h] == rank[sa[i-1] + h])
+                next[sa[i]] = next[sa[i-1]];
+            else
+                next[sa[i]] = i;
+        }
+
+        for (i=0; i<str_size; i++)
+            rank[i] = next[i];
+
+        rank[str_size] = str_size;
+    }
+
+    //compute height
+    height[rank[0]] = 0;
+    for (i=h=0; i<str_size; i++)
+    {
+        if (rank[i] > 0)
+        {
+            j = sa[rank[i] - 1];
+            while(str.at(i + h) == str.at(j + h))
+                h++;
+            height[rank[i]] = h;
+            if (h > 0)
+                h--;
+        }
     }
 }
 
@@ -555,17 +646,28 @@ void StrMatchTest()
         ret = kmp_str_match(pattern, str);
     printf("ret : %d, time %d", ret, get_time_used());
 
-    //printf("\n/***************************suffix array****************************/\n");
+    printf("\n/***************************suffix array****************************/\n");
     ////string sa_string = "aabcdefaaaba";
-    //string sa_string1 ="yeshowmuchiloveyoumydearmotherreallyicannotbelieveit";
-    //string sa_stirng2 = "yeaphowmuchiloveyoumydearmother";
-    //string sa_string =  sa_string1 + sa_stirng2; 
-    //int sa_int[100] = {0};
-    //int height[100] = {0};
-    //suffix_array(sa_string, sa_int, height);
-    //for(int i=0; i<sizeof(sa_int)/sizeof(int); i++)
-    //    cout<<sa_int[i]<<"\t";
-    //cout<<endl;
+    string sa_string1 ="yeshowmuchiloveyoumydearmotherreallyicannotbelieveit";
+    string sa_stirng2 = "yeaphowmuchiloveyoumydearmother";
+//    string sa_string =  sa_string1 + sa_stirng2; 
+    string sa_string = "aaaaaaaa0";
+    int sa_int[100] = {0};
+    int height[100] = {0};
+    suffix_array(sa_string, sa_int, height);
+    for(int i=0; i<sizeof(sa_int)/sizeof(int); i++)
+        cout<<sa_int[i]<<"\t";
+    for(int i=0; i<sizeof(sa_int)/sizeof(int); i++)
+        cout<<sa_string.c_str() + sa_int[i]<<endl;
+    cout<<endl;
+    memset(sa_int, 0, sizeof(sa_int));
+    memset(height, 0, sizeof(height));
+    suffix_array2(sa_string, sa_int, height);
+    for(int i=0; i<sizeof(sa_int)/sizeof(int); i++)
+        cout<<sa_int[i]<<"\t";
+    for(int i=0; i<sizeof(sa_int)/sizeof(int); i++)
+        cout<<sa_string.c_str() + sa_int[i]<<endl;
+    cout<<endl;
     //for(int i=0; i<sizeof(height)/sizeof(int); i++)
     //    cout<<height[i]<<"\t";
     //cout<<endl;

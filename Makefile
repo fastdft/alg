@@ -30,7 +30,7 @@ LIB_OBJS = \
 	str_alg.o \
 	utils.o \
 	time_statistics.o \
-	rsync.o \
+	#rsync.o \
 
 
 CXXFLAGS=$(CFLAGS)
