@@ -9,6 +9,7 @@
 #include "interval_tree.h"
 #include "utils.h"
 #include "time_statistics.h"
+#include "numbers.h"
 
 using namespace std;
 #define L_TEST_SIZE  10
@@ -70,5 +71,11 @@ int main(int argc, char *argv[])
 
     //printf("\n/**************************utils test*****************************/\n");
     //UtilsTest();
-    bwt_transform_test();
+    //bwt_transform_test();
+
+    //printf("\n/*************************numbers test*****************************/\n");
+    int primes[256];
+    int primes_number = get_primes_before(100, primes, 256);
+    for (int i=0; i<primes_number; i++)
+        printf("%d\n", primes[i]);
 }

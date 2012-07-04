@@ -30,6 +30,7 @@ LIB_OBJS = \
 	str_alg.o \
 	utils.o \
 	time_statistics.o \
+	numbers.o \
 	#rsync.o \
 
 
