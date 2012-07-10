@@ -21,6 +21,7 @@ void StrMatchTest();
 void PackageTest();
 void LlrbTest();
 int bwt_transform_test();
+void number_test();
 
 int main(int argc, char *argv[])
 {
@@ -74,8 +75,5 @@ int main(int argc, char *argv[])
     //bwt_transform_test();
 
     //printf("\n/*************************numbers test*****************************/\n");
-    int primes[256];
-    int primes_number = get_primes_before(100, primes, 256);
-    for (int i=0; i<primes_number; i++)
-        printf("%d\n", primes[i]);
+    number_test();
 }
