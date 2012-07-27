@@ -22,6 +22,7 @@ void PackageTest();
 void LlrbTest();
 int bwt_transform_test();
 void number_test();
+void heap_test();
 
 int main(int argc, char *argv[])
 {
@@ -75,5 +76,8 @@ int main(int argc, char *argv[])
     //bwt_transform_test();
 
     //printf("\n/*************************numbers test*****************************/\n");
-    number_test();
+    //number_test();
+
+    printf("\n/*************************heap test*****************************/\n");
+    heap_test();
 }

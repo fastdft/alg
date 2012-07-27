@@ -32,6 +32,7 @@ LIB_OBJS = \
 	time_statistics.o \
 	numbers.o \
 	inversion.o \
+	heap.o \
 	#rsync.o \
 
 
