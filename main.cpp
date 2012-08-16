@@ -59,7 +59,6 @@ int main(int argc, char *argv[])
 
     //printf("\n/**************************sb tree test*****************************/\n");
     //SBTreeTest();
-    //dpTest();
     //StateMachine();
 
     //printf("\n/**************************string algorithm test*****************************/\n");
@@ -78,6 +77,8 @@ int main(int argc, char *argv[])
     //printf("\n/*************************numbers test*****************************/\n");
     //number_test();
 
-    printf("\n/*************************heap test*****************************/\n");
-    heap_test();
+    //printf("\n/*************************heap test*****************************/\n");
+    //heap_test();
+    printf("\n/*************************dp test*****************************/\n");
+    dpTest();
 }

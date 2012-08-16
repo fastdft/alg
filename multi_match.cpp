@@ -27,7 +27,6 @@ unsigned int HashTwoBytes(const char *str)
 int PreprocessPattern(const char *pattern, int b_size, unsigned char shift[], PatternList hash_to_pat[])
 {
     const char *pat_p = pattern;
-    int next_index = PATTERN_HASH_SIZE;
 
     while(*pat_p)
     {
@@ -57,7 +56,7 @@ int PreprocessPattern(const char *pattern, int b_size, unsigned char shift[], Pa
             }
             if (list->pat != pat_p)
             {
-                list->next = &hash_to_pat[next_index++];
+                list->next = (PatternList *)malloc(sizoef(PatternList));
                 list = list->next;
                 list->pat = pat_p;
                 list->next = NULL;
@@ -203,8 +202,8 @@ int main(int argc, const char *argv[])
     {
         shift[i] = l_min - b_size + 1;
     }
-    PatternList *hash_to_pattern = (PatternList *)malloc(PATTERN_HASH_SIZE*2*sizeof(PatternList));
-    memset(hash_to_pattern, 0, PATTERN_HASH_SIZE*2*sizeof(PatternList));
+    PatternList *hash_to_pattern = (PatternList *)malloc(PATTERN_HASH_SIZE*sizeof(PatternList));
+    memset(hash_to_pattern, 0, PATTERN_HASH_SIZE*sizeof(PatternList));
     PreprocessPattern(patterns, b_size, shift, hash_to_pattern);
 
     FILE *str_handle = fopen(argv[2], "r");
@@ -261,6 +260,16 @@ int main(int argc, const char *argv[])
     free(str_buffer);
     free(patterns);
     free(shift);
+    for (int i=0; i<PATTERN_HASH_SIZE; i++)
+    {
+        PatternList *next = list->next;
+        while(next)
+        {
+            PatternList *list = next;
+            next = next->next;
+            free(list);
+        }
+    }
     free(hash_to_pattern);
 
     return 0;
