@@ -26,13 +26,14 @@ LIB_OBJS = \
 	llrb.o \
 	package.o \
 	recursive.o \
-	stack.o \
 	str_alg.o \
 	utils.o \
 	time_statistics.o \
 	numbers.o \
 	inversion.o \
 	heap.o \
+	number_trick.o \
+	stack.o \
 	#rsync.o \
 
 
@@ -48,10 +49,10 @@ TARGET=alg
 
 .PHONY:all
 all : $(TARGET)
-$(TARGET):$(TEST_OBJS) $(LIB_OBJS)
+$(TARGET):$(LIB_OBJS)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 .PHONY:clean
 clean:
-	rm -rf $(TARGET) $(TEST_OBJS)
+	rm -rf $(TARGET) $(LIB_OBJS)
 	rm -rf *.o	
