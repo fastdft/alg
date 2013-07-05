@@ -31,5 +31,4 @@ void number_trick_test()
     printf("bit_count_native: %d\n", bit_count_naive(bit_count_num));
     printf("bit_count2: %d\n", bit_count2(bit_count_num));
     printf("bit_count3: %d\n", bit_count3(bit_count_num));
-    printf("bit_count4: %d\n", bit_count4(bit_count_num));
 }
