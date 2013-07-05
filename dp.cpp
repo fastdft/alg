@@ -2,8 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ReadData.h"
+#include "time_statistics.h"
 
-#define DP_TEST_SIZE 10000
+#define DP_TEST_SIZE 100000
 
 void RabitTor()
 {
@@ -111,7 +112,7 @@ void lis_dp(int array[], int size)
     int cnt = 0;
     for (i = max_pos; i >= 0; i = bt[i])
     {
-        printf("%d\n", array[i]);
+        //printf("%d\n", array[i]);
         cnt += 1;
     }
     printf("n*n -- len: %d\n", cnt);
@@ -120,6 +121,7 @@ void lis_dp(int array[], int size)
     free(dp);
 }
 
+/*
 static inline int divide_find_smaller(int array[], int size, int des)
 {
     int s = 0, e = size - 1;
@@ -137,7 +139,7 @@ static inline int divide_find_smaller(int array[], int size, int des)
     }
     return s; //s must be larger than des
 }
-/*
+
 void lis_nlogn(int array[], int size)
 {
     int *dp = (int *)malloc(sizeof(int) * size);
@@ -208,7 +210,7 @@ void lis_nlogn(int array[], int size)
     i = m[len-1];
     do
     {
-        printf("%d\n", array[i]);
+        //printf("%d\n", array[i]);
         i = p[i];
     }while(i >= 0);
     printf("nlogn -- len: %d\n", len);
@@ -229,8 +231,13 @@ void dpTest()
     pali_cut(p);
 
     int sample[] = {1,2,3,4,5,3,4,5,7,8,9, 3,3,3,3,3,3,3,3,3};
+    time_start();
     lis_dp(test_data, DP_TEST_SIZE);
+    int time = get_time_used();
+    printf("dp: %d\n", time);
+
+    time_start();
     lis_nlogn(test_data, DP_TEST_SIZE);
-    lis_dp(sample, sizeof(sample)/sizeof(int));
-    lis_nlogn(sample, sizeof(sample)/sizeof(int));
+     time = get_time_used();
+    printf("nlogn: %d\n", time);
 }

@@ -6,7 +6,7 @@ AR=ar
 CC=gcc
 CXX=g++
 
-CFLAGS = -g
+CFLAGS = -g -O2
 
 LDFLAGS = -lm -lstdc++
 
