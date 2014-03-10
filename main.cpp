@@ -80,8 +80,8 @@ int main(int argc, char *argv[])
 
     //printf("\n/*************************heap test*****************************/\n");
     //heap_test();
-    printf("\n/*************************dp test*****************************/\n");
-    dpTest();
-    //printf("\n/*************************number trick test*****************************/\n");
-    //number_trick_test();
+    //printf("\n/*************************dp test*****************************/\n");
+    //dpTest();
+    printf("\n/*************************number trick test*****************************/\n");
+    number_trick_test();
 }
