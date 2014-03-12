@@ -82,6 +82,78 @@ void longest_equal_number(int seq[], int size)
     free(right_pos);
 }
 
+//given a sequence, output two consecutive sub-sequence, which will disjoint and the absolute value of the sum of these two sub-sequence
+void largest_sum_value(int seq[], int size)
+{
+    int *llu = (int *)malloc(size * sizeof(int)); //left largest until i
+    int *llw = (int *)malloc(size * sizeof(int)); //left largest with i
+    int *lsu = (int *)malloc(size * sizeof(int)); //left smallest until i
+    int *lsw = (int *)malloc(size * sizeof(int)); //left smallest with i
+    int *rlu = (int *)malloc(size * sizeof(int)); //right largest until i
+    int *rlw = (int *)malloc(size * sizeof(int)); //right largest with i
+    int *rsu = (int *)malloc(size * sizeof(int)); //right smallest until i
+    int *rsw = (int *)malloc(size * sizeof(int)); //right smallest with i
+
+    llu[0] = seq[0];
+    llw[0] = seq[0];
+    lsu[0] = seq[0];
+    lsw[0] = seq[0];
+    rlu[size-1] = seq[size - 1];
+    rlw[size-1] = seq[size - 1];
+    rsu[size-1] = seq[size - 1];
+    rsw[size-1] = seq[size - 1];
+
+    int i;
+    for (i = 1; i < size; i++)
+    {
+        int x =  seq[i] + llw[i-1];
+        llw[i] = x > seq[i] ? x : seq[i];
+        llu[i] = llu[i-1] > llw[i] ? llu[i-1] : llw[i];
+        x = seq[i] + lsw[i-1];
+        lsw[i] = x > seq[i] ? seq[i] : x;
+        lsu[i] = lsu[i-1] > lsw[i] ? lsw[i] : lsu[i-1];
+    }
+
+    for (i = size-2; i >= 0; i--)
+    {
+        int x = seq[i] + rlw[i+1];
+        rlw[i] = x > seq[i] ? x : seq[i];
+        rlu[i] = rlu[i+1] > rlw[i] ? rlu[i+1] : rlw[i];
+        x = seq[i] + rsw[i+1];
+        rsw[i] = x > seq[i] ? seq[i] : x;
+        rsu[i] = rsu[i+1] > rsw[i] ? rsw[i] : rsu[i+1];
+    }
+
+    int largest = 0;
+    int pos = 0;
+    for (i = 1; i < size-1; i++)
+    {
+        int x = llu[i] - rsu[i];
+        int y = rlu[i+1] - lsu[i+1];
+        if (x < 0) x = -x;
+        if (y < 0) y = -y;
+        int l = x > y ? x : y;
+
+        if (l >= largest)
+        {
+            largest = l;
+            pos = i;
+        }
+    }
+
+    printf("largest: %d, pos: %d\n", largest, pos);
+
+
+    free(llu);
+    free(llw);
+    free(lsu);
+    free(lsw);
+    free(rlu);
+    free(rlw);
+    free(rsu);
+    free(rsw);
+}
+
 void number_trick_test()
 {
     unsigned int bit_count_num = 879287493;
@@ -91,4 +163,8 @@ void number_trick_test()
 
     int num_seq[] = {0,1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0,1,1};
     longest_equal_number(num_seq, sizeof(num_seq)/sizeof(int));
+
+    int largest_seq[] = {3, 5, -2, 1, 5, 2, -4, -2, -1, 10};
+    largest_sum_value(largest_seq, sizeof(largest_seq)/sizeof(int));
+
 }
