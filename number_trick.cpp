@@ -3,6 +3,11 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
 //unsigned int is 32 bit long
 int bit_count_naive(unsigned int num)
 {
@@ -154,6 +159,46 @@ void largest_sum_value(int seq[], int size)
     free(rsw);
 }
 
+void longest_increasing_sequence(int seq[], int size)
+{
+    vector<int> m;
+    int lis_size;
+    vector<int>pos;
+
+    m.push_back(seq[0]);
+    pos.push_back(0);
+    for (int i=1; i<size; i++)
+    {
+        if (seq[i] > m.back())
+        {
+            pos.push_back(m.size());
+            m.push_back(seq[i]);
+        }
+        else 
+        {
+            vector<int>::iterator iter = lower_bound(m.begin(), m.end(), seq[i]);
+            *iter = seq[i];
+            pos.push_back(iter - m.begin());
+        }
+    }
+
+    int idx = m.size() - 1;
+    vector<int> ret;
+    for (int i=pos.size()-1; i>=0; i--)
+    {
+        if (pos[i] == idx)
+        {
+            ret.push_back(seq[i]);
+            idx--;
+        }
+    }
+    for (int i=ret.size()-1; i>=0; i--)
+    {
+        printf("%d ", ret[i]);
+    }
+    printf("\n");
+}
+
 void number_trick_test()
 {
     unsigned int bit_count_num = 879287493;
@@ -167,4 +212,6 @@ void number_trick_test()
     int largest_seq[] = {3, 5, -2, 1, 5, 2, -4, -2, -1, 10};
     largest_sum_value(largest_seq, sizeof(largest_seq)/sizeof(int));
 
+    int lis[] = {11, 5, -2, 1, 5, 2, 0, -2, -1, 10, 5};
+    longest_increasing_sequence(lis, sizeof(lis)/sizeof(int));
 }

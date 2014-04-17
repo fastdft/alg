@@ -54,35 +54,88 @@ void PreTraverse(Node *root, void (*visit)(Node *))
     }
 }
 
-void InTraverse(Node *root, void (*visit)(Node *))
+//InTraverse(node->left)
+//InTraverse(node)
+//InTraverse(node->right)
+void push_left_node(Node *node)
 {
-    Push(root);
-    Node *node = NULL;
-    while(node = GetTop(root))
+    while(node != NULL)
     {
-        while(node->left)
+        Push(node);
+        node = node->left;
+    }
+}
+
+void InTraverse1(Node *root, void (*visit)(Node *))
+{
+    Node *node = NULL;
+
+    push_left_node(root);
+    while((node = Pop(root)) != NULL)
+    {
+        (*visit)(node);
+        push_left_node(node->right);
+    }
+}
+
+void InTraverse2(Node *root, void (*visit)(Node *))
+{
+    Node *node = root;
+    do
+    {
+        if (node != NULL)
         {
             Push(node);
             node = node->left;
         }
-
-        (*visit)(node);
-
-        node = Pop(node);
-
-        if (node->right)
+        else
         {
-            Push(node->right);
+            node = Pop(root);
+            (*visit)(node);
+            node = node->right;
         }
-    }
+    }while( node!=NULL || GetTop(root) != NULL);
 }
 
 void PostTraverse(Node *root, void (*visit)(Node *))
 {}
 
+//this is a morris_in_traverse
+void MorrisTraverse(Node *root, void(*visit)(Node *))
+{
+    Node *node = root;
+    while(node != NULL)
+    {
+        if (node->left == NULL)
+        {
+            (*visit)(node);
+            node = node->right;
+        }
+        else
+        {
+            Node *tmp = node->left;
+            while(tmp->right != NULL && tmp->right != node)
+            {
+                tmp = tmp->right;
+            }
+            if (tmp->right == node)
+            {
+                tmp->right = NULL;
+                visit(node);
+                node = node->right;
+            }
+            else
+            {
+                tmp->right = node;
+                node = node->left;
+            }
+        }
+    }
+}
+
 void visit(Node *node)
 {
-    printf("node %d\t", node->value);
+    printf("node %d,\t", node->value);
    // delete node;
 }
 
@@ -95,7 +148,17 @@ void test_traverse()
     Node *root=NULL;
     InitializeStack(root);
     root = ConstructTree();
+    printf("pre: \n");
     PreTraverse(root, visit);
-    InTraverse(root, visit);
+    printf("\n");
+    printf("in1: \n");
+    InTraverse1(root, visit);
+    printf("\n");
+    printf("in2: \n");
+    InTraverse2(root, visit);
+    printf("\n");
+    printf("in: \n");
+    MorrisTraverse(root, visit);
+    printf("\n");
     UninitializeStack(root);
 }

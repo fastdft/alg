@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     //printf("pali: %s pos: %d,len %d\n", pali_str.c_str(), pali_info.pos, pali_info.len);
 
     //printf("\n/**************************tree*****************************/\n");
-    ////test_traverse();
+    //test_traverse();
 
     //printf("\n/**************************RMG test*****************************/\n");
     //RmqTest();

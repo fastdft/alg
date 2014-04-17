@@ -4,6 +4,8 @@
 #include <vector>
 #include <cmath>
 #include <assert.h>
+#include <algorithm>
+#include <functional>
 
 using namespace std;
 
@@ -231,5 +233,96 @@ int MinMaxHeap<Type>::get_proper_grand_child(int index)
 
     return ret;
 }
+
+template <class Type>
+class MedHeap
+{
+    public:
+        MedHeap();
+        void insert(Type element);
+        Type get_medial();
+        Type extract_medial();
+        size_t size();
+
+    private:
+        void rebalance();
+    private:
+        vector<Type> m_min_heap;
+        vector<Type> m_max_heap;
+};
+
+template<class Type>
+MedHeap<Type>::MedHeap()
+{}
+
+template<class Type>
+void MedHeap<Type>::insert(Type ele)
+{
+    if (m_min_heap.size() > 0 && m_min_heap[0] > ele)
+    {
+        m_min_heap.push_back(ele);
+        push_heap(m_min_heap.begin(), m_min_heap.end(), greater<Type>());
+    }
+    else
+    {
+        m_max_heap.push_back(ele);
+        push_heap(m_max_heap.begin(), m_max_heap.end(), less<Type>());
+    }
+    rebalance();
+}
+
+template<class Type>
+Type MedHeap<Type>::get_medial()
+{
+    return m_max_heap.front();
+}
+
+template<class Type>
+Type MedHeap<Type>::extract_medial()
+{
+    Type ret;
+    pop_heap(m_max_heap.begin(), m_max_heap.end(), less<Type>());
+    ret = m_max_heap.back();
+    m_max_heap.pop_back();
+
+    rebalance();
+
+    return ret;
+}
+
+template<class Type>
+size_t MedHeap<Type>::size()
+{
+    return m_min_heap.size() + m_max_heap.size();
+}
+
+
+template<class Type>
+void MedHeap<Type>::rebalance()
+{
+    while (m_min_heap.size() != m_max_heap.size() && m_min_heap.size() != m_max_heap.size() - 1)
+    {
+        Type ret;
+        if (m_min_heap.size() > m_max_heap.size())
+        {
+            pop_heap(m_min_heap.begin(), m_min_heap.end(), greater<Type>());
+            ret = m_min_heap.back();
+            m_min_heap.pop_back();
+
+            m_max_heap.push_back(ret);
+            push_heap(m_max_heap.begin(), m_max_heap.end(), less<Type>());
+        }
+        else
+        {
+            pop_heap(m_max_heap.begin(), m_max_heap.end(), less<Type>());
+            ret = m_max_heap.back();
+            m_max_heap.pop_back();
+
+            m_min_heap.push_back(ret);
+            push_heap(m_min_heap.begin(), m_min_heap.end(), greater<Type>());
+        }
+    }
+}
+
 
 #endif
